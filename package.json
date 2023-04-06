@@ -1,0 +1,26 @@
+{
+  "name": "day1",
+  "version": "1.0.0",
+  "description": "day 1 of Udemy course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"start": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlanca-c/TS-course.git"
+  },
+  "keywords": [
+    "day1"
+  ],
+  "author": "mlanca-c",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mlanca-c/TS-course/issues"
+  },
+  "homepage": "https://github.com/mlanca-c/TS-course#readme",
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}
