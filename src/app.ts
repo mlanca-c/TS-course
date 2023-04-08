@@ -8,21 +8,8 @@ button.addEventListener("click", () => {
 });
 
 // Compiler Settings
-
-// compile in watch mode
-// tsc app.ts --watch or tsc app.ts -w
-// this will compile the file and watch for changes
-
-// compiling the entire project
-// tsc --init; tsc
-// this will create a tsconfig.json file
-// this file will contain all the settings for the project
-// tsc will compile the entire project
-
-// include and exclude in tsconfig.json
-// exclude: ["node_modules"]
-// include: ["app.ts", "analytics.ts"]
-
-// setting compilation target
-
-// typescript core libs
+// Attached you find all the code snapshots for this module - you also find them attached to individual lectures throughout this module.
+// These links might also be interesting:
+//     tsconfig Docs: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
+//     Compiler Config Docs: https://www.typescriptlang.org/docs/handbook/compiler-options.html
+//     VS Code TS Debugging: https://code.visualstudio.com/docs/typescript/typescript-debugging
