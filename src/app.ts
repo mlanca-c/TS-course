@@ -1,4 +1,48 @@
-// This class when instatiated will create a form element and attach it to the DOM
+// Validation
+interface Validatable {
+  value: string | number;
+  required?: boolean;
+  minLength?: number; // checks the lentgh of the string
+  maxLength?: number;
+  min?: number; // checks the value of the number
+  max?: number;
+}
+
+function validate(validatableInput: Validatable) {
+  let isValid = true;
+  // checking if the value is required
+  if (validatableInput.required) {
+    // checking if value is empty
+    isValid = isValid && validatableInput.value.toString().trim().length !== 0;
+  }
+  // checking if minLength is provided
+  if (validatableInput.minLength) {
+    // checking if the value is greater than minLength
+    isValid =
+      isValid &&
+      validatableInput.value.toString().trim().length >=
+        validatableInput.minLength;
+  }
+  // checking if maxLength is provided
+  if (validatableInput.maxLength) {
+    // checking if the value is less than maxLength
+    isValid =
+      isValid &&
+      validatableInput.value.toString().trim().length <=
+        validatableInput.maxLength;
+  }
+  // checking if min is provided
+  if (validatableInput.min && typeof validatableInput.value === "number") {
+    // checking if the value is greater than min
+    isValid = isValid && validatableInput.value >= validatableInput.min;
+  }
+  // checking if max is provided
+  if (validatableInput.max && typeof validatableInput.value === "number") {
+    // checking if the value is less than max
+    isValid = isValid && validatableInput.value <= validatableInput.max;
+  }
+  return isValid;
+}
 
 // autobind decorator
 function autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
@@ -53,10 +97,29 @@ class ProjectInput {
     const enteredTitle = this.titleInputElement.value;
     const enteredDescription = this.descriptionInputElement.value;
     const enteredPeople = this.peopleInputElement.value;
+
+    const titleValidatable: Validatable = {
+      value: enteredTitle,
+      required: true,
+    };
+
+    const descriptionValidatable: Validatable = {
+      value: enteredDescription,
+      required: true,
+      minLength: 5,
+    };
+
+    const peopleValidatable: Validatable = {
+      value: +enteredPeople,
+      required: true,
+      min: 1,
+      max: 5,
+    };
+
     if (
-      enteredTitle.trim().length === 0 ||
-      enteredDescription.trim().length === 0 ||
-      enteredPeople.trim().length === 0
+      !validate(titleValidatable) ||
+      !validate(descriptionValidatable) ||
+      !validate(peopleValidatable)
     ) {
       alert("Invalid input, please try again!");
       return;
