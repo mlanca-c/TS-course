@@ -1,157 +1,113 @@
-// Intersection Type
-type Admin = {
-  name: string;
-  privileges: string[];
-};
+// Generics
+// const names: Array = []; // this type exists but its a generic type.
 
-type Employee = {
-  name: string;
-  startDate: Date;
-};
+// const names: string[] = [] // exactly the same as above
+// const names: Array<string> = [];
 
-type ElevatedEmployee = Admin & Employee;
+// const promise: Promise<string> = new Promise((resolve, reject) => {
+//   setTimeout(() => {
+//     resolve("This is done!");
+//   }, 2000);
+// });
 
-const e1: ElevatedEmployee = {
-  name: "mlanca-c",
-  privileges: ["create-server"],
-  startDate: new Date(),
-};
+// promise.then(data => {
+// 	data.split(' ');
+// })
 
-type Combinale = string | number;
-type Numeric = number | boolean;
-type Universal = Combinale & Numeric;
+function merge<T extends object, U extends object>(objA: T, objB: U) {
+  return Object.assign(objA, objB);
+}
 
-// const u1: Universal = 'Hello'; // this doesnt't work
-const u2: Universal = 2;
-// const u3: Universal = true; // this doesn't work
+const mergedObj = merge({ name: "Max", hobbies: ["Sports"] }, { age: 30 });
+console.log(mergedObj);
 
-// Type Guard
-function add(a: Combinale, b: Combinale) {
-  // this is a type guard
-  if (typeof a === "string" || typeof b === "string") {
-    return a.toString() + b.toString();
+interface Lengthy {
+  length: number;
+}
+
+function countAndDescribe<T extends Lengthy>(element: T): [T, string] {
+  let descriptionText = "Got no value.";
+  if (element.length === 1) {
+    descriptionText = "Got 1 element.";
+  } else if (element.length > 1) {
+    descriptionText = `Got ${element.length} elements.`;
   }
-  return a + b;
+  return [element, descriptionText];
 }
 
-type UnknownEmployee = Employee | Admin;
+console.log(countAndDescribe("Hi there!"));
+console.log(countAndDescribe(["Sports", "Cooking"]));
+console.log(countAndDescribe(["Sports"]));
+console.log(countAndDescribe([]));
+// console.log(countAndDescribe(1)); // number has no length property
 
-function printEmployeeInformation(emp: UnknownEmployee) {
-  console.log(`Name: ${emp.name}`);
-  if ("privileges" in emp) {
-    console.log(`Privileges: ${emp.privileges}`);
-  }
-  if ("startDate" in emp) {
-    console.log(`Start Date: ${emp.startDate}`);
-  }
+// keyOf Constraint
+function extractAndConvert<T extends object, U extends keyof T>(
+  obj: T,
+  key: U
+) {
+  return "Value " + obj[key];
 }
 
-printEmployeeInformation({ name: "sotto", startDate: new Date() });
+console.log(extractAndConvert({ name: "Max" }, "name"));
 
-class Car {
-  drive() {
-    console.log("Driving...");
-  }
-}
+// Generic classes
+class DataStorage<T extends string | number | boolean> {
+  private data: Array<T> = [];
 
-class Truck {
-  drive() {
-    console.log("Driving a truck...");
+  addItem(item: T) {
+    this.data.push(item);
   }
 
-  loadCargo(amount: number) {
-    console.log(`Loading cargo... ${amount}`);
+  removeItem(item: T) {
+    if (this.data.indexOf(item) === -1) {
+      return;
+    }
+
+    this.data.splice(this.data.indexOf(item), 1);
   }
-}
 
-type Vehicle = Car | Truck;
-
-function useVehicle(vehicle: Vehicle) {
-  vehicle.drive();
-  if (vehicle instanceof Truck) {
-    vehicle.loadCargo(1000);
+  getItems() {
+    return [...this.data];
   }
 }
 
-useVehicle(new Truck());
-useVehicle(new Car());
+const textStorage = new DataStorage<string>();
 
-// Discreminated Union
-interface Bird {
-  type: "bird";
-  flyingSpeed: number;
+// textStorage.addItem(1); // this gives an error
+textStorage.addItem("Max");
+textStorage.addItem("Manu");
+textStorage.removeItem("Max");
+console.log(textStorage.getItems());
+
+// const objStorage = new DataStorage<object>();
+// objStorage.addItem({ name: "Max" });
+// objStorage.addItem({ name: "Manu" });
+// // ...
+// objStorage.removeItem({ name: "Max" });
+// console.log(objStorage.getItems());
+
+// Generic Utility Types -- Readonly, Partial,
+interface CourseGoal {
+  title: string;
+  description: string;
+  completeUntil: Date;
 }
 
-interface Horse {
-  type: "horse";
-  runningSpeed: number;
+function createCourseGoal(
+  title: string,
+  description: string,
+  date: Date
+): CourseGoal {
+  let CourseGoal: Partial<CourseGoal> = {};
+  CourseGoal.title = title;
+  CourseGoal.description = description;
+  CourseGoal.completeUntil = date;
+  return CourseGoal as CourseGoal;
 }
 
-type Animal = Bird | Horse;
+console.log(createCourseGoal("ft_transcendence", "final project", new Date()));
 
-function moveAnimal(animal: Animal) {
-  let speed: number;
-  switch (animal.type) {
-    case "bird":
-      speed = animal.flyingSpeed;
-      break;
-    case "horse":
-      speed = animal.runningSpeed;
-  }
-  console.log(`Moving with speed: ${speed}`);
-}
-
-moveAnimal({ type: "bird", flyingSpeed: 30 });
-
-// Type Casting
-// const userInputElement = <HTMLInputElement>document.getElementById("user-input"); // this also works
-const userInputElement = document.getElementById("user-input");
-
-if (userInputElement) {
-  (userInputElement as HTMLInputElement).value = "Hi There!";
-}
-
-// Index Property
-interface ErrorContainer {
-  // { email: 'Not a valid email' , username: 'Must start with a character'}
-  [key: string]: string;
-}
-
-const errorBag: ErrorContainer = {
-  email: "Not a valid email!",
-  username: "Must start with a capital character!",
-};
-
-console.log(errorBag);
-
-// Function Overload
-function sub(a: number, b: number): number;
-function sub(a: string, b: string): string;
-function sub(a: Combinale, b: Combinale) {
-  // this is a type guard
-  if (typeof a === "string" || typeof b === "string") {
-    return a.toString() + b.toString();
-  }
-  return a - b;
-}
-
-const result = sub("mlanca", "-c");
-result.split("-");
-
-// Optional chaining
-const fetchedUserData = {
-  id: "u1",
-  name: "Max",
-  //   job: { title: "CEO", description: "My own company" },
-};
-
-// console.log(fetchedUserData.job && fetchedUserData.job.title); // secure way of avoiding errors in js
-console.log(fetchedUserData?.job?.title); // typescript way
-
-// Nullish Coalescing
-const userInput = null;
-// const userInput = '';2
-
-const storedData = userInput ?? "DEFAULT";
-
-console.log(storedData);
+const names: Readonly<string[]> = ["Max", "Manu"];
+// names.push("Anna"); // this gives an error
+// names.pop(); // this gives an error
