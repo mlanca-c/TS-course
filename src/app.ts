@@ -2,43 +2,41 @@
 interface Validatable {
   value: string | number;
   required?: boolean;
-  minLength?: number; // checks the lentgh of the string
+  minLength?: number;
   maxLength?: number;
-  min?: number; // checks the value of the number
+  min?: number;
   max?: number;
 }
 
 function validate(validatableInput: Validatable) {
   let isValid = true;
-  // checking if the value is required
   if (validatableInput.required) {
-    // checking if value is empty
     isValid = isValid && validatableInput.value.toString().trim().length !== 0;
   }
-  // checking if minLength is provided
-  if (validatableInput.minLength) {
-    // checking if the value is greater than minLength
+  if (
+    validatableInput.minLength != null &&
+    typeof validatableInput.value === "string"
+  ) {
     isValid =
-      isValid &&
-      validatableInput.value.toString().trim().length >=
-        validatableInput.minLength;
+      isValid && validatableInput.value.length >= validatableInput.minLength;
   }
-  // checking if maxLength is provided
-  if (validatableInput.maxLength) {
-    // checking if the value is less than maxLength
+  if (
+    validatableInput.maxLength != null &&
+    typeof validatableInput.value === "string"
+  ) {
     isValid =
-      isValid &&
-      validatableInput.value.toString().trim().length <=
-        validatableInput.maxLength;
+      isValid && validatableInput.value.length <= validatableInput.maxLength;
   }
-  // checking if min is provided
-  if (validatableInput.min && typeof validatableInput.value === "number") {
-    // checking if the value is greater than min
+  if (
+    validatableInput.min != null &&
+    typeof validatableInput.value === "number"
+  ) {
     isValid = isValid && validatableInput.value >= validatableInput.min;
   }
-  // checking if max is provided
-  if (validatableInput.max && typeof validatableInput.value === "number") {
-    // checking if the value is less than max
+  if (
+    validatableInput.max != null &&
+    typeof validatableInput.value === "number"
+  ) {
     isValid = isValid && validatableInput.value <= validatableInput.max;
   }
   return isValid;
@@ -64,7 +62,6 @@ class ProjectList {
   element: HTMLElement;
 
   constructor(private type: "active" | "finished") {
-
     this.templateElement = document.getElementById(
       "project-list"
     )! as HTMLTemplateElement;
@@ -76,7 +73,6 @@ class ProjectList {
     );
     this.element = importedNode.firstElementChild as HTMLElement;
     this.element.id = `${this.type}-projects`;
-
     this.attach();
     this.renderContent();
   }
@@ -138,13 +134,11 @@ class ProjectInput {
       value: enteredTitle,
       required: true,
     };
-
     const descriptionValidatable: Validatable = {
       value: enteredDescription,
       required: true,
       minLength: 5,
     };
-
     const peopleValidatable: Validatable = {
       value: +enteredPeople,
       required: true,
@@ -159,8 +153,9 @@ class ProjectInput {
     ) {
       alert("Invalid input, please try again!");
       return;
+    } else {
+      return [enteredTitle, enteredDescription, +enteredPeople];
     }
-    return [enteredTitle, enteredDescription, +enteredPeople];
   }
 
   private clearInputs() {
@@ -189,8 +184,6 @@ class ProjectInput {
   }
 }
 
-// rendering the form
-const projectInput = new ProjectInput();
-
-const activeProjectList = new ProjectList("active");
-const finishedProjectList = new ProjectList("finished");
+const prjInput = new ProjectInput();
+const activePrjList = new ProjectList("active");
+const finishedPrjList = new ProjectList("finished");
