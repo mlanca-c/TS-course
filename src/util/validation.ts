@@ -1,4 +1,5 @@
 // Validation
+
 namespace App {
   export interface Validatable {
     value: string | number;
