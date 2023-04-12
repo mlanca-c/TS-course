@@ -1,0 +1,31 @@
+{
+  "name": "understanding-typescript",
+  "version": "1.0.0",
+  "description": "Understanding TypeScript Course Setup",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server"
+  },
+  "keywords": [
+    "typescript",
+    "course"
+  ],
+  "author": "mlanca-c",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.4",
+    "webpack": "^5.79.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.13.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlanca-c/TS-course.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mlanca-c/TS-course/issues"
+  },
+  "homepage": "https://github.com/mlanca-c/TS-course#readme"
+}
