@@ -1,31 +1,30 @@
+import Cmp from './base-component';
+import * as Validation from '../util/validation';
+import { autobind as Autobind } from '../decorators/autobind';
+import { projectState } from '../state/project-state';
+
 // ProjectInput Class
-
-import Cmp from "./base-component.js";
-import * as Validation from "../util/validation.js";
-import { autobind as Autobind } from "../decorators/autobind.js";
-import { projectState } from "../state/project-state.js";
-
 export class ProjectInput extends Cmp<HTMLDivElement, HTMLFormElement> {
   titleInputElement: HTMLInputElement;
   descriptionInputElement: HTMLInputElement;
   peopleInputElement: HTMLInputElement;
 
   constructor() {
-    super("project-input", "app", true, "user-input");
+    super('project-input', 'app', true, 'user-input');
     this.titleInputElement = this.element.querySelector(
-      "#title"
+      '#title'
     ) as HTMLInputElement;
     this.descriptionInputElement = this.element.querySelector(
-      "#description"
+      '#description'
     ) as HTMLInputElement;
     this.peopleInputElement = this.element.querySelector(
-      "#people"
+      '#people'
     ) as HTMLInputElement;
     this.configure();
   }
 
   configure() {
-    this.element.addEventListener("submit", this.submitHandler);
+    this.element.addEventListener('submit', this.submitHandler);
   }
 
   renderContent() {}
@@ -37,18 +36,18 @@ export class ProjectInput extends Cmp<HTMLDivElement, HTMLFormElement> {
 
     const titleValidatable: Validation.Validatable = {
       value: enteredTitle,
-      required: true,
+      required: true
     };
     const descriptionValidatable: Validation.Validatable = {
       value: enteredDescription,
       required: true,
-      minLength: 5,
+      minLength: 5
     };
     const peopleValidatable: Validation.Validatable = {
       value: +enteredPeople,
       required: true,
       min: 1,
-      max: 5,
+      max: 5
     };
 
     if (
@@ -56,7 +55,7 @@ export class ProjectInput extends Cmp<HTMLDivElement, HTMLFormElement> {
       !Validation.validate(descriptionValidatable) ||
       !Validation.validate(peopleValidatable)
     ) {
-      alert("Invalid input, please try again!");
+      alert('Invalid input, please try again!');
       return;
     } else {
       return [enteredTitle, enteredDescription, +enteredPeople];
@@ -64,9 +63,9 @@ export class ProjectInput extends Cmp<HTMLDivElement, HTMLFormElement> {
   }
 
   private clearInputs() {
-    this.titleInputElement.value = "";
-    this.descriptionInputElement.value = "";
-    this.peopleInputElement.value = "";
+    this.titleInputElement.value = '';
+    this.descriptionInputElement.value = '';
+    this.peopleInputElement.value = '';
   }
 
   @Autobind
